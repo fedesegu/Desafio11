@@ -1,12 +1,14 @@
 import { Router } from "express";
 import { authMiddleware } from '../middlewares/auth.middleware.js';
 import { productsManager } from '../DAL/daos/MongoDB/productManagerDB.js'
+import jwt from "jsonwebtoken";
 import { cartManager } from '../DAL/daos/MongoDB/cartsManagerDB.js'
 import { usersManager } from '../DAL/daos/MongoDB/usersManagerDB.js'
 import { Cookie } from "express-session";
 import passport from "passport";
 import cookieParser from 'cookie-parser';
 import { generateProduct } from "../faker.js";
+import config from "../config/config.js";
 
 const router = Router();
 
@@ -45,10 +47,21 @@ router.get("/signup", async (req, res) => {
     res.render("signup", { style:"product" })
 });
 
-router.get("/restaurar", (req, res) => {
-    res.render("restaurar", { style:"product" });
+router.get("/restaurarviamail", (req,res) => {
+    const token = jwt.sign({}, config.secret_jwt);
+    res.render("restaurarviamail", { token: token, style:"product"});
 });
 
+router.get("/restaurar", (req, res) => {
+    const { token } = req.query;
+    res.cookie('tokenRest', token);
+    res.render("restaurar", {  token: token, style:"product" });
+});
+
+router.get("/users/premium/:uid", (req, res) => {
+    const { uid } = req.params;
+    res.render("usersPremium", { uid: uid, style: "product" });
+});
 router.get("/error", (req, res) => {
     res.render("error", {style:"product"});
 });
@@ -100,7 +113,7 @@ router.get("/changeproducts", async (req, res) => {
     }
 });
 
-router.get("/realTimeProducts", authMiddleware(["admin"]), async (req, res) => {
+router.get("/realTimeProducts", authMiddleware(["admin", "premium"]), async (req, res) => {
     try {
         const products = await productsManager.findAll({});
         const clonedProduct = products.docs.map(doc => doc.toObject())

@@ -21,4 +21,12 @@ export const createOne = (obj) => {
     const createdUser = Users.createOne(newObj);
     return createdUser;
 };
+export const updateUser = async (id, obj) => {
+    try {
 
+        const userModific = await Users.updateOne({ _id: id }, obj);
+        return userModific;
+    } catch (error) {
+        throw new Error(`Error updating user: ${error.message}`);
+    }
+};

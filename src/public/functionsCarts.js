@@ -19,12 +19,12 @@ const deleteOne = async (cid, _id, product) => {
         });
 
         if (!response.ok) {
-            console.error("Error in delete product to cart:", response.status, response.statusText);
+            console.error("Error deleting product cart:", response.status, response.statusText);
             return;
         }
 
         const result = await response.json();
-        console.log("Product delete to cart:", result);
+        console.log("Product delete:", result);
     } catch (error) {
         console.error("Fetch error:", error.message);
     }
@@ -50,7 +50,7 @@ const addProductToCart = async (cid, _id, product) => {
         });
 
         if (!response.ok) {
-            console.error("Error in added product to cart:", response.status, response.statusText);
+            console.error("Error adding product to cart:", response.status, response.statusText);
             return;
         }
 
@@ -78,7 +78,7 @@ const deleteAll = async (cid) => {
         });
 
         if (!response.ok) {
-            console.error("Error in delete to cart:", response.status, response.statusText);
+            console.error("Error deleting:", response.status, response.statusText);
             return;
         }
 

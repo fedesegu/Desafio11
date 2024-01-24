@@ -5,9 +5,9 @@ export const generateProduct = () => {
         id: faker.database.mongodbObjectId(),
         title: faker.commerce.product(),
         description: faker.commerce.productDescription(),
-        price: faker.commerce.price(),
-        stock: faker.number.int(100),
-        code:faker.number.int(9999),
+        price: faker.commerce.price({min: 100, max: 500}),
+        stock: faker.number.int(200),
+        code:faker.number.int(5000),
         category: faker.commerce.department(),
         status: faker.datatype.boolean(0.9),
     };

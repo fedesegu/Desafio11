@@ -31,6 +31,11 @@ class ProductsManager {
         const result = await productsModel.findById(id);
         return result;
     }
+    async findByOwner(owner) {
+        const products = productsModel.findAll();
+        const result = products.filter(product => product.owner === owner);
+        return result;
+    }
 
     async createOne(obj) {
         const result = await productsModel.create(obj);

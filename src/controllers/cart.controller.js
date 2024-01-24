@@ -58,7 +58,7 @@ export const addProductCart = async (req, res) => {
             const response = await addProduct(cid,pid);
             res.status(200).json({ message: "Product added to cart", cart: response })}
             else {
-                res.status(404).json({ message: "Stock insuficiente" });
+                res.status(404).json({ message: "Insufficient stock" });
             };
     } catch (error) {
         logger.error(error)
